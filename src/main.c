@@ -5,6 +5,7 @@
 #include "hal.h"
 #include "test.h"
 #include "console.h"
+#include "resolver_ICU.h"
 
 
 /*===========================================================================*/
@@ -69,6 +70,21 @@ int main(void) {
    * Shell manager initialization.
    */
   consoleInit();
+
+  /*
+   * Pulse control initialization.
+   */
+  //pulseInit();
+
+  /*
+   * Resolver control initialization.
+   */
+  //rsSPIInit();
+
+  /*
+   * Resolver control initialization.
+   */
+  rsICUInit();
 
   /*
    * Creates the 20ms Task.

@@ -15,6 +15,7 @@
 #include "chprintf.h"
 
 #include "console.h"
+#include "resolver_ICU.h"
 
 /* libc stub */
 int _getpid(void) {return 1;}
@@ -108,6 +109,10 @@ static const ShellCommand commands[] = {
   {"threads", cmd_threads},
   {"test", cmd_test},
   {"clear", cmd_clear},
+
+/* resolver_ICU.c */
+  {"encoder", cmd_rsICUValues},
+
   {NULL, NULL}
 };
 
