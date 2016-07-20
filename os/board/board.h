@@ -308,6 +308,7 @@
                                      PIN_OTYPE_PUSHPULL(GPIOA_SWDIO)     |  \
                                      PIN_OTYPE_PUSHPULL(GPIOA_SWCLK))
 #define VAL_GPIOA_OSPEEDR           (PIN_OSPEED_HIGH(GPIOA_CH_DIR)       |  \
+                                     PIN_OSPEED_HIGH(GPIOA_CH_B)         |  \
                                      PIN_OSPEED_HIGH(GPIOA_SPI1_CS)      |  \
                                      PIN_OSPEED_HIGH(GPIOA_SPI1_SCK)     |  \
                                      PIN_OSPEED_HIGH(GPIOA_SPI1_MISO)    |  \
@@ -345,7 +346,8 @@
                                      PIN_MODE_ALTERNATE(GPIOB_SPI2_MISO) |  \
                                      PIN_MODE_ALTERNATE(GPIOB_SPI2_MOSI))
 #define VAL_GPIOB_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOB_SPI2_CS))
-#define VAL_GPIOB_OSPEEDR           (PIN_OSPEED_HIGH(GPIOB_SPI2_CS)     |  \
+#define VAL_GPIOB_OSPEEDR           (PIN_OSPEED_HIGH(GPIOB_CH_NM)       |  \
+                                     PIN_OSPEED_HIGH(GPIOB_SPI2_CS)     |  \
                                      PIN_OSPEED_HIGH(GPIOB_SPI2_SCK)    |  \
                                      PIN_OSPEED_HIGH(GPIOB_SPI2_MISO)   |  \
                                      PIN_OSPEED_HIGH(GPIOB_SPI2_MOSI))
@@ -392,18 +394,27 @@
  * PD14 - GPIOD_W_H                 (alternate 2).
  * PD15 - GPIOD_LED6                (output pushpull).
  */
-#define VAL_GPIOD_MODER             (PIN_MODE_ALTERNATE(GPIOD_U_H)          | \
+#define VAL_GPIOD_MODER             (PIN_MODE_INPUT(GPIOD_LOT)              | \
+                                     PIN_MODE_INPUT(GPIOD_DOS)              | \
+                                     PIN_MODE_ALTERNATE(GPIOD_U_H)          | \
                                      PIN_MODE_ALTERNATE(GPIOD_V_H)          | \
                                      PIN_MODE_ALTERNATE(GPIOD_W_H)          | \
                                      PIN_MODE_OUTPUT(GPIOD_LED6))
-
-#define VAL_GPIOD_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOD_LED6))
-#define VAL_GPIOD_OSPEEDR           (PIN_OSPEED_HIGH(GPIOD_U_H)             | \
+#define VAL_GPIOD_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOD_LOT)          | \
+                                     PIN_OTYPE_PUSHPULL(GPIOD_DOS)          | \
+                                     PIN_OTYPE_PUSHPULL(GPIOD_LED6))
+#define VAL_GPIOD_OSPEEDR           (PIN_OSPEED_HIGH(GPIOD_LOT)             | \
+                                     PIN_OSPEED_HIGH(GPIOD_DOS)             | \
+                                     PIN_OSPEED_HIGH(GPIOD_U_H)             | \
                                      PIN_OSPEED_HIGH(GPIOD_V_H)             | \
                                      PIN_OSPEED_HIGH(GPIOD_W_H)             | \
                                      PIN_OSPEED_HIGH(GPIOD_LED6))
-#define VAL_GPIOD_PUPDR             (PIN_PUPDR_FLOATING(GPIOD_LED6))
-#define VAL_GPIOD_ODR               (PIN_ODR_LOW(GPIOD_LED6))
+#define VAL_GPIOD_PUPDR             (PIN_PUPDR_FLOATING(GPIOD_LOT)          |  \
+                                     PIN_PUPDR_FLOATING(GPIOD_DOS)          |  \
+                                     PIN_PUPDR_FLOATING(GPIOD_LED6))
+#define VAL_GPIOD_ODR               (PIN_ODR_HIGH(GPIOD_LOT)                |  \
+                                     PIN_ODR_HIGH(GPIOD_DOS)                |  \
+                                     PIN_ODR_LOW(GPIOD_LED6))
 #define VAL_GPIOD_AFRL              0x00000000
 #define VAL_GPIOD_AFRH              (PIN_AFIO_AF(GPIOD_U_H, 2)             | \
                                      PIN_AFIO_AF(GPIOD_V_H, 2)             | \
@@ -416,12 +427,15 @@
  * PE9  - RDVEL                     (alternate 3).
  * PE10 - SPI2_SAMPLE               (output pushpull maximum).
  */
-#define VAL_GPIOE_MODER             (PIN_MODE_ALTERNATE(GPIOE_CH_A)           | \
+#define VAL_GPIOE_MODER             (PIN_MODE_ALTERNATE(GPIOE_CH_A)         | \
+                                     PIN_MODE_OUTPUT(GPIOE_RDVEL)           | \
                                      PIN_MODE_OUTPUT(GPIOE_SPI2_SAMPLE))
-#define VAL_GPIOE_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOE_SPI2_SAMPLE))
-#define VAL_GPIOE_OSPEEDR           0xFFFFFFFF
-#define VAL_GPIOE_PUPDR             0xFFFFFFFF
-#define VAL_GPIOE_ODR               0xFFFFFFFF
+#define VAL_GPIOE_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOE_RDVEL)        | \
+                                     PIN_OTYPE_PUSHPULL(GPIOE_SPI2_SAMPLE))
+#define VAL_GPIOE_OSPEEDR           (PIN_OSPEED_HIGH(GPIOE_RDVEL)           | \
+                                     PIN_OSPEED_HIGH(GPIOE_CH_A))
+#define VAL_GPIOE_PUPDR             (PIN_PUPDR_FLOATING(GPIOE_RDVEL))
+#define VAL_GPIOE_ODR               (PIN_ODR_HIGH(GPIOE_RDVEL))
 #define VAL_GPIOE_AFRL              (PIN_AFIO_AF(GPIOE_CH_A, 3))
 #define VAL_GPIOE_AFRH              0x00000000
 

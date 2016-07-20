@@ -6,6 +6,9 @@
 #include "test.h"
 #include "console.h"
 #include "resolver_ICU.h"
+#include "resolver_SPI.h"
+#include "pulse.h"
+#include "control.h"
 
 
 /*===========================================================================*/
@@ -24,10 +27,10 @@ static THD_FUNCTION(thread1, p) {
     systime_t time;
     time = 500;
 
-    palSetPad(GPIOD, GPIOD_LED6);
+    //palSetPad(GPIOD, GPIOD_LED6);
     chThdSleepMilliseconds(time/10);
 
-    palClearPad(GPIOD, GPIOD_LED6);
+    //palClearPad(GPIOD, GPIOD_LED6);
     chThdSleepMilliseconds(time);
   }
   return 0; /* Never executed.*/
@@ -43,10 +46,10 @@ static THD_FUNCTION(task20ms, p) {
   chRegSetThreadName("task20ms");
   time = chVTGetSystemTime();  
   while (TRUE) {
-    time += MS2ST(20);
+    time += MS2ST(10);
 
-
-
+    //rsSPICalc();
+    controlCalc();
     chThdSleepUntil(time);
   }
   return 0; /* Never executed.*/
@@ -72,19 +75,24 @@ int main(void) {
   consoleInit();
 
   /*
-   * Pulse control initialization.
-   */
-  //pulseInit();
-
-  /*
    * Resolver control initialization.
    */
-  //rsSPIInit();
+  rsSPIInit();
 
   /*
    * Resolver control initialization.
    */
   rsICUInit();
+
+  /*
+   * Pulse control initialization.
+   */
+  pulseInit();
+
+  /*
+   * Control initialization.
+   */
+  controlInit();
 
   /*
    * Creates the 20ms Task.

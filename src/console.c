@@ -16,6 +16,8 @@
 
 #include "console.h"
 #include "resolver_ICU.h"
+#include "resolver_SPI.h"
+#include "control.h"
 
 /* libc stub */
 int _getpid(void) {return 1;}
@@ -112,6 +114,14 @@ static const ShellCommand commands[] = {
 
 /* resolver_ICU.c */
   {"encoder", cmd_rsICUValues},
+
+/* resolver_SPI.c */
+  {"spi", cmd_rsSPIValues},
+
+/* control.c */
+  {"motor", cmd_motorSet},
+  {"autocalib", cmd_autoCalib},
+  {"control_values", cmd_controlValues},
 
   {NULL, NULL}
 };
