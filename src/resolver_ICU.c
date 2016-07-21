@@ -18,6 +18,9 @@
  *PA0 - CH_DIR
  */
 
+#define PHASE_PAIR    10
+
+
 uint32_t encoder_degree_max;
 uint32_t encoder_degree;
 uint32_t count;
@@ -29,9 +32,14 @@ uint32_t count_nm;
 
 bool first_rotation = TRUE;
 
+uint32_t cl_different;
+uint32_t cl_degree_ass;
+uint32_t cl_degree;
+uint32_t width;
+
 /*----- Encoder - A -----*/
 static void icu_up_a(ICUDriver *icup) {
-  if (palReadPad(GPIOA, GPIOA_CH_B) == FALSE)
+  /*if (palReadPad(GPIOA, GPIOA_CH_B) == FALSE)
   {
     encoder_degree++;
   }
@@ -41,11 +49,11 @@ static void icu_up_a(ICUDriver *icup) {
     encoder_degree--;
   }
   count ++;
-  count_a++;
+  count_a++;*/
 }
 
 static void icu_down_a(ICUDriver *icup) {
-  if (palReadPad(GPIOA, GPIOA_CH_B))
+  /*if (palReadPad(GPIOA, GPIOA_CH_B))
   {
     encoder_degree++;
   }
@@ -54,7 +62,7 @@ static void icu_down_a(ICUDriver *icup) {
     encoder_degree--;
   }
   count ++;
-  count_a++;
+  count_a++;*/
 }
 /*------------------------*/
 
@@ -62,7 +70,7 @@ static void icu_down_a(ICUDriver *icup) {
 
 /*----- Encoder - B -----*/
 static void icu_up_b(ICUDriver *icup) {
-  if (palReadPad(GPIOE, GPIOE_CH_A))
+  /*if (palReadPad(GPIOE, GPIOE_CH_A))
   {
     encoder_degree++;
   }
@@ -71,20 +79,20 @@ static void icu_up_b(ICUDriver *icup) {
     encoder_degree--;
   }
   count ++;
-  count_b++;
+  count_b++;*/
 }
 
 static void icu_down_b(ICUDriver *icup) {
-  if (palReadPad(GPIOE, GPIOE_CH_A) == FALSE)
-  {
-    encoder_degree++;
-  }
-  if (palReadPad(GPIOE, GPIOE_CH_A))
-  {
-    encoder_degree--;
-  }
-  count ++;
-  count_b++;
+  encoder_degree+=4;
+
+  cl_different = 58;
+  cl_degree_ass = calcAdc2Deg(encoder_degree, PHASE_PAIR);
+  cl_degree = calcDegOffset(cl_degree_ass, cl_different);
+    /* -----Motor control section----- */
+
+  pulseDirection(1);
+  pulseControl_2(cl_degree, width);
+
 }
 /*------------------------*/
 
@@ -97,11 +105,13 @@ static void icu_up_nm(ICUDriver *icup) {
     first_rotation = FALSE;
   }
 
-  if (encoder_degree < 4094 && encoder_degree > 4098)
-  {  
-    motorOff();
+  else if (encoder_degree < 4090 || encoder_degree > 4102)
+  {
+      width = 0;
   }
-  
+  else
+    width = 10000;
+
   encoder_degree_max = encoder_degree;
   encoder_degree = palReadPad(GPIOA, GPIOA_CH_DIR) ? 0 : 4096 ;
   count_save = count;
@@ -146,19 +156,20 @@ static ICUConfig icu_nm = {
 void rsICUInit(void) {
   encoder_degree = 0;
 
-  icuStart(&ICUD9, &icu_a);
+  //icuStart(&ICUD9, &icu_a);
   icuStart(&ICUD5, &icu_b);
   icuStart(&ICUD3, &icu_nm);
 
-  icuStartCapture(&ICUD9);
+  //icuStartCapture(&ICUD9);
   icuStartCapture(&ICUD5);
   icuStartCapture(&ICUD3);
 
-  icuEnableNotifications(&ICUD9);
+  //icuEnableNotifications(&ICUD9);
   icuEnableNotifications(&ICUD5);
   icuEnableNotifications(&ICUD3);
 
   encoder_degree = rsSPIRead();
+  width = 10000;
 }
 
 uint16_t rsICUValues(void){
@@ -195,11 +206,6 @@ void cmd_rsICUValues(BaseSequentialStream *chp, int argc, char *argv[]) {
       chprintf(chp, "DIR: %15d\r\n", palReadPad(GPIOA, GPIOA_CH_DIR) ? 1 : 0);
       chprintf(chp, "LOT: %15d\r\n", palReadPad(GPIOA, GPIOD_LOT) ? 1 : 0);
       chprintf(chp, "DOS: %15d\r\n", palReadPad(GPIOA, GPIOD_DOS) ? 1 : 0);
-      //chprintf(chp, "spi_degree: %15d\r\n", rsSPIRead());
-      //chprintf(chp, "count: %15d\r\n", count);
-      //chprintf(chp, "count: %15d\r\n", count_save);
-      //chprintf(chp, "\r\n");
-      //chprintf(chp, "controlValues: %15d\r\n", controlValues());
 
       chThdSleepMilliseconds(10);
   }
