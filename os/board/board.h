@@ -340,7 +340,8 @@
  * PB14 - SPI2_MISO                 (alternate 5).
  * PB15 - SPI2_MOSI                 (alternate 5).
  */
-#define VAL_GPIOB_MODER             (PIN_MODE_ALTERNATE(GPIOB_CH_NM)    |  \
+#define VAL_GPIOB_MODER             (PIN_MODE_ANALOG(GPIOB_CURR_3)      |  \
+                                     PIN_MODE_ALTERNATE(GPIOB_CH_NM)    |  \
                                      PIN_MODE_OUTPUT(GPIOB_SPI2_CS)     |  \
                                      PIN_MODE_ALTERNATE(GPIOB_SPI2_SCK) |  \
                                      PIN_MODE_ALTERNATE(GPIOB_SPI2_MISO) |  \
@@ -369,7 +370,11 @@
  * PC7  - GPIOC_V_L                (alternate 3).
  * PC8  - GPIOC_W_L                (alternate 3).
  */
-#define VAL_GPIOC_MODER             (PIN_MODE_ALTERNATE(GPIOC_U_L)          | \
+#define VAL_GPIOC_MODER             (PIN_MODE_ANALOG(GPIOC_NTC_U)           | \
+                                     PIN_MODE_ANALOG(GPIOC_NTC_V)           | \
+                                     PIN_MODE_ANALOG(GPIOC_NTC_W)           | \
+                                     PIN_MODE_ANALOG(GPIOC_MOTOR_PTC)       | \
+                                     PIN_MODE_ALTERNATE(GPIOC_U_L)          | \
                                      PIN_MODE_ALTERNATE(GPIOC_V_L)          | \
                                      PIN_MODE_ALTERNATE(GPIOC_W_L))
 #define VAL_GPIOC_OTYPER            0x00000000
@@ -416,8 +421,8 @@
                                      PIN_ODR_HIGH(GPIOD_DOS)                |  \
                                      PIN_ODR_LOW(GPIOD_LED6))
 #define VAL_GPIOD_AFRL              0x00000000
-#define VAL_GPIOD_AFRH              (PIN_AFIO_AF(GPIOD_U_H, 2)             | \
-                                     PIN_AFIO_AF(GPIOD_V_H, 2)             | \
+#define VAL_GPIOD_AFRH              (PIN_AFIO_AF(GPIOD_U_H, 2)              | \
+                                     PIN_AFIO_AF(GPIOD_V_H, 2)              | \
                                      PIN_AFIO_AF(GPIOD_W_H, 2))
 
 /*

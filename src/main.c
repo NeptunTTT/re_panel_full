@@ -27,10 +27,10 @@ static THD_FUNCTION(thread1, p) {
     systime_t time;
     time = 500;
 
-    //palSetPad(GPIOD, GPIOD_LED6);
+    palSetPad(GPIOD, GPIOD_LED6);
     chThdSleepMilliseconds(time/10);
 
-    //palClearPad(GPIOD, GPIOD_LED6);
+    palClearPad(GPIOD, GPIOD_LED6);
     chThdSleepMilliseconds(time);
   }
   return 0; /* Never executed.*/

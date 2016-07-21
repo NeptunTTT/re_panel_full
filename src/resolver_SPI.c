@@ -177,6 +177,4 @@ void cmd_rsSPIValues(BaseSequentialStream *chp, int argc, char *argv[]) {
 10100001 1111 0000
 10100010 0111 1000
 
-
-
 */

@@ -55,52 +55,11 @@ static int i;
 static int diff_index;
 static uint16_t avg_diff[AVG_10_TMB];
 
-
-static void gptcb(GPTDriver *gptp) {
-
-  (void)gptp;
-  	
-  chSysLockFromISR();
-  palTogglePad(GPIOD, GPIOD_LED6);
-  	
-/* ---------- Normal use ---------- */
-  if (auto_calib == FALSE)
-	{
-		task_cycle = 0;
-    calib_degree = 0;
-
-    cl_degree_ICU = rsICUValues();
-    cl_different = 58;
-    cl_degree_ass = calcAdc2Deg(cl_degree_ICU, PHASE_PAIR);
-    cl_degree = calcDegOffset(cl_degree_ass, cl_different);
-		/* -----Motor control section----- */
-
-    pulseDirection(cl_direction);
-		//pulseDirection(cl_direction);
-    pulseControl_2(cl_degree, cl_width);
-	}
-
-	gptStartOneShotI(&GPTD14, 250);
-	chSysUnlockFromISR();
-}
-
-
-static const GPTConfig gpt4cfg = {
-  28e6,    /* 10kHz timer clock.*/
-  gptcb,    /* Timer callback.*/
-  0,
-  0
-};
-
 void controlInit(void) {
 	cl_width = 9000;
 	cl_direction = 1;
 	auto_calib = FALSE;
   spi_icu_calib_cycle = 0;
-
-	gptStart(&GPTD14, &gpt4cfg);
-
-	gptStartOneShot(&GPTD14, 1000);
 }
 
 void controlCalc(void) {

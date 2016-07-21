@@ -20,8 +20,7 @@ enum logStates
 };
 
 void pulseInit(void);
-void pulseControl(uint32_t degree);
-void pulseControl_2(uint32_t degree, uint32_t width);
+void pulseControl(uint32_t degree, uint32_t width);
 void pulseWidth(uint32_t in);
 void pulseDirection(uint16_t direction);
 //void pulseFunction(uint32_t in);
